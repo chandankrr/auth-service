@@ -3,7 +3,11 @@ package com.chandankrr.authservice.entity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Setter
 @Getter
-@Builder
+@SuperBuilder
 @Table(name = "t_users")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserInfo {

@@ -1,5 +1,6 @@
 package com.chandankrr.authservice.auth;
 
+import com.chandankrr.authservice.producer.UserInfoProducer;
 import com.chandankrr.authservice.repository.UserRepository;
 import com.chandankrr.authservice.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +27,12 @@ public class SecurityConfig {
 
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserInfoProducer userInfoProducer;
 
     @Bean
     @Autowired
     public UserDetailsService userDetailsService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        return new UserDetailsServiceImpl(userRepository, passwordEncoder);
+        return new UserDetailsServiceImpl(userRepository, passwordEncoder, userInfoProducer);
     }
 
     @Bean

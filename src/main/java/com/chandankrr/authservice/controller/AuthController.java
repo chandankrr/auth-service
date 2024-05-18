@@ -1,7 +1,7 @@
 package com.chandankrr.authservice.controller;
 
+import com.chandankrr.authservice.dto.UserInfoDto;
 import com.chandankrr.authservice.entity.RefreshToken;
-import com.chandankrr.authservice.model.UserInfoDto;
 import com.chandankrr.authservice.response.JwtResponseDto;
 import com.chandankrr.authservice.service.JwtService;
 import com.chandankrr.authservice.service.RefreshTokenService;
