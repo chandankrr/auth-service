@@ -1,9 +1,9 @@
 package com.chandankrr.authservice.controller;
 
 import com.chandankrr.authservice.entity.RefreshToken;
-import com.chandankrr.authservice.request.AuthRequestDto;
-import com.chandankrr.authservice.request.RefreshTokenRequestDto;
-import com.chandankrr.authservice.response.JwtResponseDto;
+import com.chandankrr.authservice.dto.AuthRequestDto;
+import com.chandankrr.authservice.dto.RefreshTokenRequestDto;
+import com.chandankrr.authservice.dto.JwtResponseDto;
 import com.chandankrr.authservice.service.JwtService;
 import com.chandankrr.authservice.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.chandankrr.authservice.response;
+package com.chandankrr.authservice.dto;
 
 import lombok.*;
 

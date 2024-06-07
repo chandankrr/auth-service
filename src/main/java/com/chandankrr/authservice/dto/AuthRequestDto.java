@@ -1,14 +1,15 @@
-package com.chandankrr.authservice.request;
+package com.chandankrr.authservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Setter
 @Getter
-public class RefreshTokenRequestDto {
-    private String token;
+public class AuthRequestDto {
+    private String username;
+    private String password;
 }
