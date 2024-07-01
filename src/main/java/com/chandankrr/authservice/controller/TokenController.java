@@ -30,13 +30,12 @@ public class TokenController {
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequestDto authRequestDto) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequestDto.getUsername(), authRequestDto.getPassword()));
+                    new UsernamePasswordAuthenticationToken(authRequestDto.username(), authRequestDto.password()));
             if (authentication.isAuthenticated()) {
-                RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestDto.getUsername());
-                return ResponseEntity.ok(JwtResponseDto.builder()
-                        .accessToken(jwtService.generateToken(authRequestDto.getUsername()))
-                        .token(refreshToken.getToken())
-                        .build());
+                RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestDto.username());
+                return ResponseEntity.ok(new JwtResponseDto(
+                        jwtService.generateToken(authRequestDto.username()),
+                        refreshToken.getToken()));
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
             }
@@ -47,15 +46,11 @@ public class TokenController {
 
     @PostMapping("/refreshToken")
     public JwtResponseDto refreshToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
-        return refreshTokenService.findByToken(refreshTokenRequestDto.getToken())
+        return refreshTokenService.findByToken(refreshTokenRequestDto.token())
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUserInfo)
-                .map(userInfo -> {
-                    String accessToken = jwtService.generateToken(userInfo.getUsername());
-                    return JwtResponseDto.builder()
-                            .accessToken(accessToken)
-                            .token(refreshTokenRequestDto.getToken())
-                            .build();
-                }).orElseThrow(() -> new RuntimeException("Refresh token not found"));
+                .map(userInfo -> new JwtResponseDto(
+                        jwtService.generateToken(userInfo.getUsername()),
+                        refreshTokenRequestDto.token())).orElseThrow(() -> new RuntimeException("Refresh token not found"));
     }
 }

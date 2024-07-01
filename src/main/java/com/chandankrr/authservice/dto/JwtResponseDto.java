@@ -1,13 +1,5 @@
 package com.chandankrr.authservice.dto;
 
-import lombok.*;
+public record JwtResponseDto(String accessToken, String token) {
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter
-@Getter
-@Builder
-public class JwtResponseDto {
-    private String accessToken;
-    private String token;
 }
