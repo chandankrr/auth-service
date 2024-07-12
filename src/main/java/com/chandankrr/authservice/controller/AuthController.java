@@ -64,4 +64,18 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping() {
+        logger.info("Attempting to ping user");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails userDetails) {
+            String userId = userDetailsService.getUserByUsername(userDetails.getUsername());
+            logger.info("Logged in user: {} with user id: {}", userDetails.getUsername(), userId);
+            return ResponseEntity.ok(userId);
+        } else {
+            logger.info("Logged in user not found");
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+    }
+
 }

@@ -1,8 +1,8 @@
 package com.chandankrr.authservice.service;
 
 import com.chandankrr.authservice.dto.UserInfoDto;
-import com.chandankrr.authservice.entity.UserInfo;
 import com.chandankrr.authservice.dto.UserInfoEvent;
+import com.chandankrr.authservice.entity.UserInfo;
 import com.chandankrr.authservice.producer.UserInfoProducer;
 import com.chandankrr.authservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -61,6 +62,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // push event to queue
         userInfoProducer.sendEventToKafka(userInfoEventToPublish(userInfoDto, userId));
         return true;
+    }
+
+    public String getUserByUsername(String userName){
+        return Optional.of(userRepository.findByUsername(userName)).map(UserInfo::getUserId).orElse(null);
     }
 
     private UserInfoEvent userInfoEventToPublish(UserInfoDto userInfoDto, String userId) {

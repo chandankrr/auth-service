@@ -1,6 +1,5 @@
 package com.chandankrr.authservice.dto;
 
-import com.chandankrr.authservice.entity.UserInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
