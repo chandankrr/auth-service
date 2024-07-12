@@ -1,5 +1,6 @@
 package com.chandankrr.authservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
@@ -14,8 +15,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Setter
 @Getter
-@SuperBuilder
-@Table(name = "t_users")
+@Builder
+@Table(name = "users")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserInfo {
     @Id
@@ -24,11 +25,13 @@ public class UserInfo {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
+    @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "t_users_roles",
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )

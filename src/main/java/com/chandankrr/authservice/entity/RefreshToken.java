@@ -1,5 +1,7 @@
 package com.chandankrr.authservice.entity;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +13,8 @@ import java.time.Instant;
 @Setter
 @Getter
 @Builder
-@Table(name = "t_tokens")
+@Table(name = "tokens")
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,11 +22,10 @@ public class RefreshToken {
 
     private String token;
 
-    @Column(name = "expiry_date")
     private Instant expiryDate;
 
     @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserInfo userInfo;
 
 

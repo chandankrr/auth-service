@@ -5,6 +5,7 @@ import com.chandankrr.authservice.entity.UserInfo;
 import com.chandankrr.authservice.repository.RefreshTokenRepository;
 import com.chandankrr.authservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -18,12 +19,15 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
 
+    @Value("${refresh.token.expiry.ms}")
+    private long refreshTokenExpiryMs;
+
     public RefreshToken createRefreshToken(String username) {
         UserInfo userInfoExtracted = userRepository.findByUsername(username);
         RefreshToken refreshToken = RefreshToken.builder()
                 .userInfo(userInfoExtracted)
                 .token(UUID.randomUUID().toString())
-                .expiryDate(Instant.now().plusMillis(600000))
+                .expiryDate(Instant.now().plusMillis(refreshTokenExpiryMs))
                 .build();
         return refreshTokenRepository.save(refreshToken);
     }

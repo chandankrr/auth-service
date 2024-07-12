@@ -6,6 +6,8 @@ import com.chandankrr.authservice.dto.UserInfoEvent;
 import com.chandankrr.authservice.producer.UserInfoProducer;
 import com.chandankrr.authservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,12 +26,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final UserInfoProducer userInfoProducer;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        logger.debug("Entering in loadUserByUsername Method...");
         UserInfo user = userRepository.findByUsername(username);
         if (user == null) {
+            logger.error("Username not found: {}", username);
             throw new UsernameNotFoundException("could not found user..!!");
         }
+        logger.info("User Authenticated Successfully..!!!");
         return new CustomUserDetails(user);
     }
 
@@ -38,7 +45,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public Boolean signupUser(UserInfoDto userInfoDto) {
-        //        ValidationUtil.validateUserAttributes(userInfoDto);
         userInfoDto.setPassword(passwordEncoder.encode(userInfoDto.getPassword()));
         if (Objects.nonNull(checkIfUserAlreadyExist(userInfoDto))) {
             return false;

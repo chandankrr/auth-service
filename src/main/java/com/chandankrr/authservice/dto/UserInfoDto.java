@@ -5,16 +5,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-@SuperBuilder
+@Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserInfoDto extends UserInfo {
+public class UserInfoDto {
+
+    @NonNull
+    private String username;
+
+    @NonNull
+    private String password;
 
     @NonNull
     private String firstName;

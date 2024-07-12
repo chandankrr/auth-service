@@ -1,22 +1,16 @@
-package com.chandankrr.authservice.entity;
+package com.chandankrr.authservice.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
+@Setter
 @Builder
-@Table(name = "roles")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserRole {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roleId;
-
-    private String name;
+public class AuthenticationRequest {
+    private String username;
+    private String password;
 }
