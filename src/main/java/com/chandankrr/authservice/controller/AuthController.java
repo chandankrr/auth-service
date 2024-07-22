@@ -7,6 +7,11 @@ import com.chandankrr.authservice.entity.RefreshToken;
 import com.chandankrr.authservice.service.JwtService;
 import com.chandankrr.authservice.service.RefreshTokenService;
 import com.chandankrr.authservice.service.UserDetailsServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +36,11 @@ public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
+    @Operation(summary = "Sign up a new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "User already exists")
+    })
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody UserInfoDto userInfoDto) {
         logger.info("Attempting to sign up user with username: {}", userInfoDto.getUsername());
@@ -44,6 +54,12 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Log in an existing user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User logged in successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthenticationResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Invalid username or password")
+    })
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
@@ -64,6 +80,12 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Ping to check if the user is logged in")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User is logged in",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     @GetMapping("/ping")
     public ResponseEntity<String> ping() {
         logger.info("Attempting to ping user");
