@@ -22,8 +22,8 @@ public class RefreshTokenService {
     @Value("${refresh.token.expiry.ms}")
     private long refreshTokenExpiryMs;
 
-    public RefreshToken createRefreshToken(String username) {
-        UserInfo userInfoExtracted = userRepository.findByUsername(username);
+    public RefreshToken createRefreshToken(String email) {
+        UserInfo userInfoExtracted = userRepository.findByEmail(email);
         RefreshToken refreshToken = RefreshToken.builder()
                 .userInfo(userInfoExtracted)
                 .token(UUID.randomUUID().toString())

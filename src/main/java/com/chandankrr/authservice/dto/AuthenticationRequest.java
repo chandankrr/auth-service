@@ -11,6 +11,6 @@ import lombok.*;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class AuthenticationRequest {
-    private String username;
+    private String email;
     private String password;
 }

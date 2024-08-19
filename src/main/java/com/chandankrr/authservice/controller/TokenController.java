@@ -43,7 +43,7 @@ public class TokenController {
         return refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
                 .map(refreshToken -> {
-                    String token = jwtService.generateToken(refreshToken.getUserInfo().getUsername());
+                    String token = jwtService.generateToken(refreshToken.getUserInfo().getEmail());
                     logger.info("Generated access token: {}", token);
                     return ResponseEntity.ok(new AuthenticationResponse(token, requestRefreshToken));
                 })

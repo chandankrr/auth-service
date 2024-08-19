@@ -15,7 +15,7 @@ import lombok.*;
 public class UserInfoDto {
 
     @NonNull
-    private String username;
+    private String email;
 
     @NonNull
     private String password;
@@ -25,10 +25,4 @@ public class UserInfoDto {
 
     @NonNull
     private String lastName;
-
-    @NonNull
-    private Long phoneNumber;
-
-    @NonNull
-    private String email;
 }

@@ -21,6 +21,4 @@ public class UserInfoEvent {
     private String lastName;
 
     private String email;
-
-    private Long phoneNumber;
 }

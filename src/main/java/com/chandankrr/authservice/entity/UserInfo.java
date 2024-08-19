@@ -22,7 +22,9 @@ public class UserInfo {
     @Column(name = "user_id")
     private String userId;
 
-    private String username;
+    @NonNull
+    @Column(unique = true)
+    private String email;
 
     @JsonIgnore
     private String password;

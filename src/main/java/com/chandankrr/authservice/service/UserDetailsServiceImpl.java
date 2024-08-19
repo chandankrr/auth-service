@@ -30,11 +30,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         logger.debug("Entering in loadUserByUsername Method...");
-        UserInfo user = userRepository.findByUsername(username);
+        UserInfo user = userRepository.findByEmail(email);
         if (user == null) {
-            logger.error("Username not found: {}", username);
+            logger.error("Username not found: {}", email);
             throw new UsernameNotFoundException("could not found user..!!");
         }
         logger.info("User Authenticated Successfully..!!!");
@@ -42,7 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public UserInfo checkIfUserAlreadyExist(UserInfoDto userInfoDto) {
-        return userRepository.findByUsername(userInfoDto.getUsername());
+        return userRepository.findByEmail(userInfoDto.getEmail());
     }
 
     public Boolean signupUser(UserInfoDto userInfoDto) {
@@ -53,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String userId = UUID.randomUUID().toString();
         UserInfo user = UserInfo.builder()
                 .userId(userId)
-                .username(userInfoDto.getUsername())
+                .email(userInfoDto.getEmail())
                 .password(userInfoDto.getPassword())
                 .roles(new HashSet<>())
                 .build();
@@ -65,7 +65,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public String getUserByUsername(String userName){
-        return Optional.of(userRepository.findByUsername(userName)).map(UserInfo::getUserId).orElse(null);
+        return Optional.of(userRepository.findByEmail(userName)).map(UserInfo::getUserId).orElse(null);
     }
 
     private UserInfoEvent userInfoEventToPublish(UserInfoDto userInfoDto, String userId) {
@@ -74,7 +74,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .firstName(userInfoDto.getFirstName())
                 .lastName(userInfoDto.getLastName())
                 .email(userInfoDto.getEmail())
-                .phoneNumber(userInfoDto.getPhoneNumber())
                 .build();
     }
 }

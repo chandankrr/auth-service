@@ -43,13 +43,13 @@ public class AuthController {
     })
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody UserInfoDto userInfoDto) {
-        logger.info("Attempting to sign up user with username: {}", userInfoDto.getUsername());
+        logger.info("Attempting to sign up user with email: {}", userInfoDto.getEmail());
         Boolean isSignedUp = userDetailsService.signupUser(userInfoDto);
         if (isSignedUp) {
-            logger.info("User signed up successfully with username: {}", userInfoDto.getUsername());
+            logger.info("User signed up successfully with email: {}", userInfoDto.getEmail());
             return ResponseEntity.ok("User registered successfully");
         } else {
-            logger.warn("Signup failed for username: {}", userInfoDto.getUsername());
+            logger.warn("Signup failed for email: {}", userInfoDto.getEmail());
             return ResponseEntity.badRequest().body("User already exists");
         }
     }
@@ -63,19 +63,19 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
-            logger.info("Attempting to login user with username: {}", authenticationRequest.getUsername());
+            logger.info("Attempting to login user with email: {}", authenticationRequest.getEmail());
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String jwtToken = jwtService.generateToken(userDetails.getUsername());
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUsername());
 
-            logger.info("User logged in successfully with username: {}", authenticationRequest.getUsername());
+            logger.info("User logged in successfully with email: {}", authenticationRequest.getEmail());
             return ResponseEntity.ok(new AuthenticationResponse(jwtToken, refreshToken.getToken()));
         } catch (AuthenticationException e) {
-            logger.error("Login failed for username: {}", authenticationRequest.getUsername(), e);
+            logger.error("Login failed for email: {}", authenticationRequest.getEmail(), e);
             return ResponseEntity.status(401).body(null);
         }
     }
